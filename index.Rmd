@@ -12,3 +12,17 @@ output:
 ## Project thoughts
 
 I am interested in exploring data related to race and the relationship with voting turnout. How likely is each race to vote and what can those reasons be. Voter suppression can influence this so I want to talk about voting suppression somehow. I can also mention which party each race is likely to vote for. (this idea might change but this is my first idea)
+
+2nd (most recent idea) 
+The new thought is to use fox news data to test whether more people being exposed to fox news change their ideology, meaning does it make different groups of people vote more conservatively?
+
+```{r}
+library(tidyverse)
+foxnews <- read_csv("foxnews.csv")
+
+```
+
+
+## proposal 
+Does increases exposure to fox news media increase votes for republicans? My hypothesis is that the more people are exposed to right wing media outlets, they start to vote for republicans because they are consuming bias content. If they are subscribed they probably like and agree with the content or at least believe it, which would change their voting preferences. I think the voters voting for republican will increase as the subscribers increase.  The sample is comprised of town names in the US as the rows. The explanatory variable of interest is the share of fox news subscribers in 2000 for each town. The outcome variable is the change in two party vote share for republicans between the years. If the two party vote share for republicans increase, then it would support my hypothesis. If I observe anything other than a meaningful increase in party vote share, then it would probably disprove my hypothesis. 
+
