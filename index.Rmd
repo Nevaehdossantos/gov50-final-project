@@ -45,4 +45,4 @@ foxnews |>
   
 
 ```
-There seems to be a negative relationship
+There seems to be a negative relationship like i predicted. As the prortion of black people increase, gopvote share decreases. 
