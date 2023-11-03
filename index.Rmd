@@ -16,6 +16,9 @@ I am interested in exploring data related to race and the relationship with voti
 2nd (most recent idea) 
 The new thought is to use fox news data to test whether more people being exposed to fox news change their ideology, meaning does it make different groups of people vote more conservatively?
 
+(3rd most receent idea)
+To see if the proportion of black people in the proportion affects the gop vote share. 
+
 ```{r}
 library(tidyverse)
 foxnews <- read_csv("foxnews.csv")
@@ -23,9 +26,23 @@ foxnews <- read_csv("foxnews.csv")
 ```
 
 
-## proposal 
-Does increases exposure to fox news media increase votes for republicans? My hypothesis is that as more people are exposed to right wing media outlets, they start to vote for republicans because they are consuming bias content. If they are subscribed they probably like and agree with the content or at least believe it, which would change their voting preferences. I think the voters voting for republicans will increase as the subscribers increase.  The sample is comprised of town names in the US as the rows. The explanatory variable of interest is the share of fox news subscribers in 2000 for each town. The outcome variable is the change in two party vote share for republicans between the years. If the two party vote share for republicans increase, then it would support my hypothesis. If I observe anything other than a meaningful increase in party vote share, then it would probably disprove my hypothesis. 
+## proposal  (old)
+Does increases exposure to fox news media increase gop vote share? My hypothesis is that as more people are exposed to right wing media outlets, they start to vote for republicans because they are consuming bias content. If they are subscribed they probably like and agree with the content or at least believe it, which would change their voting preferences. I think the voters voting for republicans will increase as the subscribers increase.  The sample is comprised of town names in the US as the rows. The explanatory variable of interest is the share of fox news subscribers in 2000 for each town. The outcome variable is the change in two party vote share for republicans between the years. If the two party vote share for republicans increase, then it would support my hypothesis. If I observe anything other than a meaningful increase in party vote share, then it would probably disprove my hypothesis. 
  
 The following study is from: Stefano DellaVigna and Ethan Kaplan (2007). “The Fox News Effect: Media Bias and Voting.” Quarterly Journal of Economics, 122:3, pp.1187-1234.
 
 
+
+## MILESTONE 3
+
+New idea is to see if there is a relationship between the proportion of the population that is black and  the gopvote share. I would assume if there is more black people, the gop vote share would decrease because they tend to vote for democrats more than republicans
+
+
+```{r}
+foxnews |>
+  ggplot(mapping = aes(x = black1990, y = gopvoteshare1992)) +
+ geom_point() + geom_smooth(method = "lm", se = FALSE)
+  
+
+```
+There seems to be a negative relationship
