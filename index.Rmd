@@ -46,3 +46,23 @@ foxnews |>
 
 ```
 There seems to be a negative relationship like i predicted. As the prortion of black people increase, gopvote share decreases. 
+
+
+## Milestone 4
+
+
+```{r}
+model <- lm(gopvoteshare1992 ~ black1990, data = foxnews)
+model |>
+  broom::tidy() |>
+  select(term, estimate) |>
+  knitr::kable(digits = 2)
+
+
+```
+
+The intercept shows that when the proportion of the black population is 0, the gop vote share in 1992 is 0.49
+
+The black1990 shows that for a one unit increase in the black population, the gop vote share decreases by .34
+
+This supports my claim and visual that when the black population increases, the gop vote share decreases
