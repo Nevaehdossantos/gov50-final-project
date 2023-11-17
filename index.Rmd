@@ -65,4 +65,4 @@ The intercept shows that when the proportion of the black population is 0, the g
 
 The black1990 shows that for a one unit increase in the black population, the gop vote share decreases by .34
 
-This supports my claim and visual that when the black population increases, the gop vote share decreases.
+This supports my claim and visual that when the black population increases, the gop vote share decreasses.
