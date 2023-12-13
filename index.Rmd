@@ -94,7 +94,7 @@ The coefficient for black1990 shows that a one unit increase in the proportion o
 
 The coefficient for logincome1990 shows that a one unit increase in the median income in 1990 on the logarithmic scale, holding the other predictor in the model constant (black1990), is associated with a .029 increase in two party vote share for Republicans in 1992. This shows us a slight positive relationship between median income and the vote share for Republicans.The p value is less than .001 which means at the .05 and .01 alpha levels, it is statistically significant.
  
-Similar to the previous regression, the statistically significance of the data suggests there is some level of causality but I would not say with complete certainty that there is definite causality between these variables.  There can still be possibility of confounding variables like political and social events that happened around the election, the specific candidate and much more. 
+Similar to the previous regression, the statistically significance of the data suggests there is a relationship and maybe some level of causality but I would not say with complete certainty that there is definite causality between these variables.  There can still be a possibility of confounding variables like political and social events that happened around the election, the specific candidate and much more. 
  
  
 ## Conclusion
