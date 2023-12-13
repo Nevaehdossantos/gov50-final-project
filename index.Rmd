@@ -1,7 +1,7 @@
 ---
 title: "Gov 50 Final Project"
 author: "Nevaeh Dos Santos"
-description: "fox news data"
+description: "The black population and Republican vote share"
 output:
   distill::distill_article:
     self_contained: false
@@ -9,60 +9,110 @@ output:
 
 
 
-## Project thoughts
+## Introduction
 
-I am interested in exploring data related to race and the relationship with voting turnout. How likely is each race to vote and what can those reasons be. Voter suppression can influence this so I want to talk about voting suppression somehow. I can also mention which party each race is likely to vote for. (this idea might change but this is my first idea)
+Does the proportion of black people in the population affect the GOP vote share? I hypothesize that as the black population increases, the GOP vote share decreases. This is because black people are usually more likely to vote for Democrats than Republicans. Although there are black people who vote for Republicans, a majority of black people have tended to vote for Democratic candidates because the democratic party has historically been associated with social justice causes. Democrats have made efforts to address black voters in their campaigns. Although realistically, both parties do not do a great job actually fulfilling their promises in helping the black community, the Democratic party may seem like the more accepting of the two parties towards black people, especially due to the stereotypes associated with the types of people that vote for each party. I believe this is important because it can answer a lot of political questions. I think it is important to know which groups are more likely to vote for certain parties. We should question why this is. Are the parties unwelcoming to certain groups? Are they doing something wrong that they could be doing better? It there another factor separate to the parties affecting this? 
 
-2nd (most recent idea) 
-The new thought is to use fox news data to test whether more people being exposed to fox news change their ideology, meaning does it make different groups of people vote more conservatively?
-
-(3rd most receent idea)
-To see if the proportion of black people in the proportion affects the gop vote share. 
-
-```{r}
-library(tidyverse)
-foxnews <- read_csv("foxnews.csv")
-
-```
-
-
-## proposal  (old)
-Does increases exposure to fox news media increase gop vote share? My hypothesis is that as more people are exposed to right wing media outlets, they start to vote for republicans because they are consuming bias content. If they are subscribed they probably like and agree with the content or at least believe it, which would change their voting preferences. I think the voters voting for republicans will increase as the subscribers increase.  The sample is comprised of town names in the US as the rows. The explanatory variable of interest is the share of fox news subscribers in 2000 for each town. The outcome variable is the change in two party vote share for republicans between the years. If the two party vote share for republicans increase, then it would support my hypothesis. If I observe anything other than a meaningful increase in party vote share, then it would probably disprove my hypothesis. 
- 
 The following study is from: Stefano DellaVigna and Ethan Kaplan (2007). “The Fox News Effect: Media Bias and Voting.” Quarterly Journal of Economics, 122:3, pp.1187-1234.
 
 
+## Data Source Description
 
-## MILESTONE 3
+The Fox news data source was published by  Stefano DellaVigna and Ethan Kaplan in 2007. The data contains the two party vote share for Republicans in 1992, 1996 and 2000. It include the town, the state, the share of fox news subscribers in 2000, the proportion of population with a college degree in 1990, the proportion of male population, black population, and Hispanic population  in 1990, as well as the median income in 1990 and the median income in 1990 on the logarithmic scale. The data was originally gathered to see how the entry of Fox News in cable markets had an impact on voting because between October 1996 and November 2000, the conservative Fox News Channel was introduced into 20 percent of U. S. towns' cable programming. I am using the data set to answer a different question.
 
-New idea is to see if there is a relationship between the proportion of the population that is black and  the gopvote share. I would assume if there is more black people, the gop vote share would decrease because they tend to vote for democrats more than republicans
+## ask abt cross section or before and after or correlational???
 
+The key dependent variable I am using is the gopvoteshare1992 which is the two party vote share for Republicans in the 1992 presidential election. The key independent variable I am using is black1990 , which is the proportion of black population in 1990. The varibales in the dataset are collected for different towns in the U.S. My research is an observational study. It is not an experiment since treatment and control groups were not assigned, they simply observed and recorded their findings. My research design is a cross section design. This is because I am looking at the relationship between my variables at one specific point in time, I am not looking at changes over time. 
+
+
+The plot below is the density distribution of gopvoteshare1992 which is the dependent variable that represents the two party vote share for Republicans in 1992.
+
+
+
+
+```{r}
+library(tidyverse)
+
+
+foxnews <- read_csv("foxnews.csv")
+
+gopvoteshare1992_density_histogram <- foxnews |>
+  ggplot(mapping = aes(x = gopvoteshare1992)) +
+  geom_histogram(aes(y = after_stat(density)))
+
+gopvoteshare1992_density_histogram
+```
+
+This plot shows that the vote share for Republicans in 1992 is approximately normal with the center of the data being around 0.50.
+ 
+ 
+ 
+## Results 
 
 ```{r}
 foxnews |>
   ggplot(mapping = aes(x = black1990, y = gopvoteshare1992)) +
- geom_point() + geom_smooth(method = "lm", se = FALSE)
+ geom_point() + geom_smooth(method = "lm", se = FALSE) +  
+  labs(x = "Proportion of Black Population in 1990",
+       y = "Two Party Vote share for Republicans in the 1992 Presidential Election",
+       title = "Relationship between Black Population and GOP Vote Share in 1992")
   
 
 ```
-There seems to be a negative relationship like i predicted. As the prortion of black people increase, gopvote share decreases. 
-
-
-## Milestone 4
-
-
+ 
+ This scatter plot shows a slightly negative relationship between the variables. This means that as the black population increase, the gop vote share decreased. A regression analysis will allow us to dive deeper into this analysis.  
+ 
+ 
 ```{r}
 model <- lm(gopvoteshare1992 ~ black1990, data = foxnews)
 model |>
   broom::tidy() |>
   select(term, estimate) |>
-  knitr::kable(digits = 2)
+  knitr::kable(digits = 3)
 
 
+modelsummary::modelsummary(model,
+                           statistic = c("s.e. = {std.error}",
+                                         "p = {p.value}"),
+                           gof_map = c("nobs", "r.squared", "adj.r.squared"))
+```
+ 
+ 
+The regression tells us that the intercept is .492 and the value of the coefficient for the proportion of black population in 1990 is -0.336. The coefficient of black1990 tells us that a one unit increase the proportion of black population in 1990 is associated with a -0.336 decrease in the two party vote share for Republicans in 1992. This backs up the negative relationship that we saw in the scatter plot above. The intercept means that when the proportion of black population in 1990 is 0, the two party vote share for Republicans is .492. It is unlikely that there were towns in the United States with absolutely no black people, so the intercept value is not too useful. The p value for my independent variable, black1990, is <.001. It is statistically significant because at the .05 and .01 alpha levels this small p value is less than alpha and we would be able to reject a null hypothesis of no effect. There seems to be a relationship between the two variables. There could be possible confounding variables that affect this study. For example, towns that happen to happen to have a larger black population could have a smaller vote share for Republicans due to income levels as certain policies that the parties believe in might favor a certain class of people. A larger proportion of black people tend to be poor on average compared to other races. Maybe income was influencing the voting share and not race directly. Other confounding variables could be the political party that was in power previously, as their performance and treatment to different groups of people could affect the way people vote. The town or states could matter as some areas get more attention then others. There could be many different confounding variables which means we cannot say for certain that an increase in the proportion of black population causes the two party vote share for Republicans to decrease. 
+
+
+ 
+We could also conduct a multivariate regression. In this case, I will add the independent variable, logincome1990 which represents the median income in 1990 on the logarithmic scale. I am using the median income on the logarithmic scale instead of just the median income, because the distribution of the data is more normal on the logarithmic scale. I am adding this because I think it could add some interesting findings to the study. Maybe it has a bigger affect than race. The work and promises of certain parties could have angered or pleased people with different levels of income. Minorities also tend to have lower incomes which is important to remember.
+
+```{r}
+multi_model <- lm(gopvoteshare1992 ~ black1990 + logincome1990, data = foxnews)
+modelsummary::modelsummary(multi_model,
+                           statistic = c("s.e. = {std.error}",
+                                         "p = {p.value}"),
+                           gof_map = c("nobs", "r.squared", "adj.r.squared"))
 ```
 
-The intercept shows that when the proportion of the black population is 0, the gop vote share in 1992 is 0.49
+The coefficient for black1990 shows that a one unit increase in the proportion of black people in 1990, holding the other predictor (logincome1990) in the model constant, is associated with a .307 decrease in the two party vote share for Republicans in 1992. The p value is less than .001 which means at the .05 and .01 alpha levels, it is statistically significant. 
 
-The black1990 shows that for a one unit increase in the black population, the gop vote share decreases by .34
+The coefficient for logincome1990 shows that a one unit increase in the median income in 1990 on the logarithmic scale, holding the other predictor in the model constant (black1990), is associated with a .029 increase in two party vote share for Republicans in 1992. This shows us a slight positive relationship between median income and the vote share for Republicans.The p value is less than .001 which means at the .05 and .01 alpha levels, it is statistically significant.
+ 
+Similar to the previous regression, it is still difficult to prove causality between these variables. There can still be confounding variables like political and social events that happened around the election, the specific candidate and much more. We cannot say for sure that median income and the proportion of black population causes a change in the two party vote share 
+ 
+ 
+ 
+## Conclusion
 
-This supports my claim and visual that when the black population increases, the gop vote share decreases.
+My study's purpose was to see the relationship between the proportion of black population in towns and the two party Vote share for Republicans in that town. The results showed that there is a somewhat small negative relationship between the proportion of black population in 1990 and the vote share for Republicans in 1992. I also tested another variable. There seemed to be a somewhat small positive relationship between median income in 1990 and the vote share for Republicans in 1992. 
+Both of these variables were statistically significant due to their small p values, and did add some support to my hypothesis. We cannot say for sure that there is causality between the variables due to possible confounding variables like the political events during that time, the previous candidate, and many more. There are some more limitations to the study. The two party vote share for Republicans were conducted fore the 1992, 1996 and 2000 Presidential elections. However, the demographic information like income, proportion of black population, and more were all gathered in 1990. This is exactly what I would change if possible. I would try to gather the demographic information closer to the Presidential elections years. Although some of the demographic information not change too drastically within a few years, we should be safe and instead try to gather them during the same year as the election year or at most a year before. If I had more time and money I might even add categorical variables. For example I could add categorical variable representing 1 if they are black and 0 if they are not. I could do categorical variables for a range of income levels, different races and more. After getting that demographic information, I could ask them questions about their voting preferncnes  I feel like this could help with testing a direct relationship between variables and control for at least some confoudnign variables.
+ 
+ 
+ 
+```{r}
+foxnews |>
+  ggplot(mapping = aes(x = logincome1990)) +
+  geom_histogram(aes(y = after_stat(density)))
+```
+ 
+
+
+
